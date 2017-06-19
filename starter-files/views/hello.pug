@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	div.div
+		- const upLastName = last_name.toUpperCase(); //localhost:7777/?last_name=whatever
+		p#first_name Anca
+		p#last_name #{upLastName}
+	div.div
+		img(src="anca.jpg" alt=`Last name ${upLastName}`)
