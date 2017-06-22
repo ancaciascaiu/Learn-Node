@@ -52,9 +52,9 @@ storeSchema.pre('save', async function(next) {
 
 storeSchema.statics.getTagsList = function() {
 	return this.aggregate([
-		{ $unwind: '$tags' },
-		{ $group: { _id: '$tags', count: { $sum: 1} } },
-		{ $sort: { count: -1 } }
+		{ $unwind: '$tags' }, //unwins the tags from the objects they belong to
+		{ $group: { _id: '$tags', count: { $sum: 1} } }, //take existing tags by id (=like reduce) and count
+		{ $sort: { count: -1 } } //sort by most popular, descending
 	]);
 }
 
