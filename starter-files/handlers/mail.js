@@ -29,7 +29,7 @@ exports.send = async (options) => {
 		html: html,
 		text: text
 	};
-	const sendMail = promisify(transport.senMail, transport);
+	const sendMail = promisify(transport.sendMail, transport);
 	return sendMail(mailOptions);
 };
 
