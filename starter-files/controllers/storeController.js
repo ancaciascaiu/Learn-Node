@@ -89,7 +89,7 @@ exports.getStoreBySlug = async(req, res) => {
 	const store = await Store.findOne({ slug: req.params.slug }).populate('author');
 	if(!store) return next();
 	res.render('store', { store, title: store.name });
-}
+};
 
 exports.getStoresByTag = async (req, res) => {
 	const tag = req.params.tag;
@@ -98,5 +98,24 @@ exports.getStoresByTag = async (req, res) => {
 	const storesPromise = Store.find({ tags: tagQuery });
 	const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
 	res.render('tag', { tags: tags, title: 'Tags', tag , stores});
+};
+
+exports.searchStores = async (req, res) => {
+	const stores = await Store
+	//first find stores that match the search criteria
+	.find({
+		$text: {
+			$search: req.query.q
+		}
+	}, {
+		score: { $meta: 'textScore' }
+	})
+	//then sort them
+	.sort({
+		score: { $meta: 'textScore' }
+	})
+	// and limit them to only 5
+	.limit(5);
+	res.json(stores);
 }
 
